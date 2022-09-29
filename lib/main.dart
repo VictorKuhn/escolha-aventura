@@ -18,7 +18,19 @@ class StoryPage extends StatefulWidget {
 
 class _StoryPageState extends State<StoryPage> {
 
-  storyBrain StoryBrain = new storyBrain();
+  StoryBrain storyBrain = StoryBrain();
+
+  void UpdateStory(int userOption) {
+    setState(() {
+      storyBrain.nextStory(userOption);
+    });
+  }
+
+  void UpdateRestart() {
+    setState(() {
+      storyBrain.restart();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +52,7 @@ class _StoryPageState extends State<StoryPage> {
                 flex: 12,
                 child: Center(
                   child: Text(
-                    StoryBrain.getStory(),
+                    storyBrain.getStory(),
                     style: TextStyle(
                       fontSize: 25.0,
                     ),
@@ -52,12 +64,17 @@ class _StoryPageState extends State<StoryPage> {
                 child: TextButton(
                   onPressed: () {
                     // Usuário escolhe opção 1
+                    if(storyBrain.isChoice2Available() == true){
+                      UpdateStory(1);
+                    }else{
+                      UpdateRestart();
+                    }
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.red,
                   ),
                   child: Text(
-                    StoryBrain.getChoice1(),
+                    storyBrain.getChoice1(),
                     style: TextStyle(
                       fontSize: 20.0,
                       color: Colors.white,
@@ -70,17 +87,15 @@ class _StoryPageState extends State<StoryPage> {
               ),
               Expanded(
                 flex: 2,
-                child: Visibility(
-                  visible: storyBrain.isChoice2Available(),
                   child: TextButton(
                     onPressed: () {
-                      // usuário escolhe opção 2
+                      UpdateStory(2);
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.blue,
                     ),
                     child: Text(
-                      StoryBrain.getChoice2(),
+                      storyBrain.getChoice2(),
                       style: TextStyle(
                         fontSize: 20.0,
                         color: Colors.white,
@@ -88,7 +103,6 @@ class _StoryPageState extends State<StoryPage> {
                     ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
